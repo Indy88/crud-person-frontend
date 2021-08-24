@@ -1,0 +1,219 @@
+<div>
+  <p-table
+  [columns]="cols"
+  [value]="personList"
+  [paginator]="true"
+  [rows]="5"
+  dataKey="id"
+  editMode="row"
+  [rowsPerPageOptions]="[5,10,15,20]">
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns">
+        {{rowData[col.field]}}
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+    <tr [pEditableRow]="rowData">
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text"
+                   [(ngModel)]="rowData.fullname">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.fullname}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text"
+                   [(ngModel)]="rowData.cpf">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.cpf}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text"
+                   [(ngModel)]="rowData.email">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.email}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text"
+                   [(ngModel)]="rowData.phone">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.phone}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td style="text-align:center">
+
+        <button  pButton type="button" icon="pi pi-plus"
+                 class="p-button-success p-mr-2"
+                [style]="{marginRight: '.5em'}"
+                (click)="onAdd()"></button>
+
+        <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil"
+                styleClass="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+
+        <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check"
+                class="ui-button-success"
+                [style]="{marginLeft: '.5em'}"
+                (click)="onRowEditSave(rowData)">
+        </button>
+
+        <button *ngIf="editing"  pButton type="button" pCancelEditableRow icon="pi pi-times"
+                styleClass="ui-button-danger"
+                [style]="{marginLeft: '.5em'}"
+                (click)="onRowEditCancel(rowData, ri)"></button>
+
+        <p-button type="button" icon="pi pi-trash"
+                  class="p-button-danger"
+                  [style]="{marginLeft: '.5em'}"
+                  (onClick)="deletePerson(rowData)"></p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+</p-table>
+</div>
+
+<p-dialog [(visible)]="personDialog"
+          [style]="{width: '450px'}"
+          header="Add Person" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="p-field">
+      <div class="p-row">
+           <div class="p-field p-col-6">
+             <label for="fullname">FullName</label>
+             <input type="text" pInputText id="fullname" [ngModel]="person?.fullname" required autofocus />
+             <small class="p-invalid" *ngIf="submitted && !person?.fullname">Name is required.</small>
+           </div>
+
+           <div class="p-field p-col-6">
+             <label for="cpf">DNI</label>
+             <p-inputMask  id="cpf" [ngModel]="person?.cpf" mask="99999999999" placeholder="999-99-9999" required ></p-inputMask>
+             <small class="p-invalid" *ngIf="submitted && !person?.cpf">DNI is required.</small>
+           </div>
+         </div>
+      <div class="p-row">
+        <div class="p-field p-col-6">
+          <label for="email">Email</label>
+          <input type="text" pInputText id="email" [ngModel]="person?.email" required  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+          <small class="p-invalid" *ngIf="submitted && !person?.email">Email is required.</small>
+        </div>
+
+        <div class="p-field p-col-6">
+          <label for="phone">Phone</label>
+          <p-inputMask  id="phone" [ngModel]="person?.phone" mask="(999) 999-9999" placeholder="(999) 999-9999" required ></p-inputMask>
+        </div>
+
+      </div>
+
+      <div class="p-row">
+        <div class="p-field p-col-6">
+          <label for="datebirth">Date Birth</label>
+          <input type="text" pInputText id="datebirth" [ngModel]="person?.datebirth" required />
+          <small class="p-invalid" *ngIf="submitted && !person?.datebirth">Date is required.</small>
+        </div>
+
+        <div class="p-field p-col-6">
+          <p-dropdown [options]="gender"
+                      [ngModel]="person?.sex"
+                      placeholder="Select a Gender" optionLabel="name" [showClear]="true"></p-dropdown>
+        </div>
+      </div>
+
+
+
+      <div class="p-row" style="margin-top: 20px">
+        <div class="p-field">
+         <!-- <label for="description">Date Birth</label>
+          <input type="text" pInputText id="datebirth" [ngModel]="person?.datebirth" required />
+          <small class="p-invalid" *ngIf="submitted && !person?.datebirth">Date is required.</small>-->
+          <span class="p-float-label">
+              <textarea id="float-input" rows="3" cols="30" pInputTextarea></textarea>
+               <label for="float-input">Description</label>
+          </span>
+
+
+
+
+        </div>
+
+      </div>
+
+
+
+
+
+
+    </div>
+
+
+   <!-- <div class="p-field">
+      <label class="p-mb-3">Category</label>
+      <div class="p-formgrid p-grid">
+        <div class="p-field-radiobutton p-col-6">
+          <p-radioButton id="category1" name="category" value="Accessories" [(ngModel)]="product.category"></p-radioButton>
+          <label for="category1">Accessories</label>
+        </div>
+        <div class="p-field-radiobutton p-col-6">
+          <p-radioButton id="category2" name="category" value="Clothing" [(ngModel)]="product.category"></p-radioButton>
+          <label for="category2">Clothing</label>
+        </div>
+        <div class="p-field-radiobutton p-col-6">
+          <p-radioButton id="category3" name="category" value="Electronics" [(ngModel)]="product.category"></p-radioButton>
+          <label for="category3">Electronics</label>
+        </div>
+        <div class="p-field-radiobutton p-col-6">
+          <p-radioButton id="category4" name="category" value="Fitness" [(ngModel)]="product.category"></p-radioButton>
+          <label for="category4">Fitness</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-formgrid p-grid">
+      <div class="p-field p-col">
+        <label for="price">Price</label>
+        <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+      </div>
+      <div class="p-field p-col">
+        <label for="quantity">Quantity</label>
+        <p-inputNumber id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
+      </div>
+    </div>-->
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="onAdd()"></button>
+  </ng-template>
+</p-dialog>
+
+<div style="margin-top: 3%">
+  <button pButton pRipple type="button" label="Go to Maps" class="p-button-raised p-button-info" (click)="gotoMaps()"></button>
+</div>
