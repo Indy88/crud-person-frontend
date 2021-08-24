@@ -14,7 +14,7 @@ export class PersonComponent implements OnInit {
 
   personList: IPerson[];
   personDialog: boolean;
-  person: IPerson;
+  person: IPerson = {fullname: '', cpf: 0, datebirth: new Date(), sex: '', email: ''};
   submitted = false;
   cols = [
     { field: 'fullname', header: 'FullName' },
@@ -28,6 +28,8 @@ export class PersonComponent implements OnInit {
     {name: 'Male', code: 'M'},
   ];
 
+  invalidDates: Array<Date>;
+  maxDate: Date;
   totalRecords: number;
   clonedPerson: { [personData: string]: IPerson; } = {};
 
@@ -39,6 +41,12 @@ export class PersonComponent implements OnInit {
 
   ngOnInit(): void {
      this.loadTable();
+     const today = new Date();
+     this.maxDate = today;
+
+     /*const invalidDate = new Date();
+     invalidDate.setDate(today.getDate() - 1);
+     this.invalidDates = [today, invalidDate];*/
   }
 
 
@@ -54,10 +62,30 @@ export class PersonComponent implements OnInit {
   }
 
   onAdd(): void {
-    this.submitted = true;
+    this.person = {};
+    this.submitted = false;
     this.personDialog = true;
   }
 
+  onSavePerson(): void{
+    this.submitted = true;
+    if (this.validtePerson(this.person.cpf)){
+
+     }
+  }
+
+
+  validtePerson(id): boolean {
+    let valid = true;
+    this.personService.findById(id).then(
+      (data) => {
+      if (data != null){
+        valid = false;
+        }
+      return valid;
+      });
+    return valid;
+  }
   onRowEditInit(person: IPerson): void  {
     this.clonedPerson[person.fullname] = { ...person };
   }
@@ -67,7 +95,7 @@ export class PersonComponent implements OnInit {
     this.personService.updateBook(person)
       .subscribe( data => {
         this.ngOnInit();
-        alert("Book Updated successfully.");
+        alert('Book Updated successfully.');
       });
   }
 
@@ -77,13 +105,16 @@ export class PersonComponent implements OnInit {
     delete this.clonedPerson[person.fullname];
   }
 
-  deletePerson(person: IPerson) {
-    console.log('Book Deleted');
-    this.personService.deletePerson(person)
-      .subscribe( data => {
-        this.ngOnInit();
-        alert("Book Deleted successfully.");
+  deletePerson(person: IPerson): void {
+    this.personService.deletePerson(person.id).then(
+      (data) =>{
+         console.log(data);
+           this.ngOnInit();
       });
+      /*.subscribe( data => {
+        this.ngOnInit();
+        alert('Book Deleted successfully.');
+      });*/
 
   }
 

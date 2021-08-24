@@ -17,21 +17,13 @@ export class PersonService {
     return this.http.put<IPerson>("http://localhost:8080/api/books" + "/"+ person.name,person);
   }
 
-  deletePerson(person) {
-    return this.http.delete<IPerson>("http://localhost:8080/api/books" + "/"+ person.name);
+  deletePerson(id): any {
+    return this.http.delete<any>(`${environment.API_TRACK}/api/v1/person/delete/` + id).toPromise();
   }
 
-  /* getCondoByAdmin(managerId: number): Observable<any> {
-     return this.http.get(`${environment.API_TRACK}/api/v1/condo/admin/` + managerId);
-   }
-
-   create(condoObject: any) {
-     return this.http.post(`${environment.API_TRACK}/api/v1/condo` , condoObject);
-   }
-
-   update(idCondo: number, condObject: any) {
-     return this.http.put(`${environment.API_TRACK}/api/v1/condo/` + idCondo, condObject);
-   }*/
+  findById(id){
+    return this.http.get(`${environment.API_TRACK}/api/v1/person/findById/` + id).toPromise();
+  }
 
 
 }

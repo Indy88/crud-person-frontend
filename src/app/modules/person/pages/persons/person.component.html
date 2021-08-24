@@ -109,21 +109,23 @@
       <div class="p-row">
            <div class="p-field p-col-6">
              <label for="fullname">FullName</label>
-             <input type="text" pInputText id="fullname" [ngModel]="person?.fullname" required autofocus />
-             <small class="p-invalid" *ngIf="submitted && !person?.fullname">Name is required.</small>
+             <input type="text" pInputText id="fullname" [ngModel]="person?.fullname" [maxLength]="60" required autofocus />
+             <small class="p-invalid" *ngIf="submitted && person?.fullname == ''">Name is required.</small>
            </div>
 
            <div class="p-field p-col-6">
-             <label for="cpf">DNI</label>
-             <p-inputMask  id="cpf" [ngModel]="person?.cpf" mask="99999999999" placeholder="999-99-9999" required ></p-inputMask>
-             <small class="p-invalid" *ngIf="submitted && !person?.cpf">DNI is required.</small>
+             <label>DNI</label>
+             <p-inputNumber [ngModel]="person?.cpf" mode="decimal" inputId="cpf" [useGrouping]="false"
+                            [maxlength]="11" [minlength]="11">
+             </p-inputNumber>
+             <small class="p-invalid" *ngIf="submitted && person?.cpf== ''">DNI is required.</small>
            </div>
          </div>
       <div class="p-row">
         <div class="p-field p-col-6">
           <label for="email">Email</label>
           <input type="text" pInputText id="email" [ngModel]="person?.email" required  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
-          <small class="p-invalid" *ngIf="submitted && !person?.email">Email is required.</small>
+          <small class="p-invalid" *ngIf="submitted && !person?.email == ''">Email is required.</small>
         </div>
 
         <div class="p-field p-col-6">
@@ -135,15 +137,15 @@
 
       <div class="p-row">
         <div class="p-field p-col-6">
-          <label for="datebirth">Date Birth</label>
-          <input type="text" pInputText id="datebirth" [ngModel]="person?.datebirth" required />
-          <small class="p-invalid" *ngIf="submitted && !person?.datebirth">Date is required.</small>
+          <label>Date Birth</label>
+          <p-calendar [ngModel]="person?.datebirth"  [maxDate]="maxDate" [readonlyInput]="true" inputId="min-max" required></p-calendar>
         </div>
 
-        <div class="p-field p-col-6">
+        <div class="p-field p-col-6" style="margin-top: 20px">
           <p-dropdown [options]="gender"
                       [ngModel]="person?.sex"
                       placeholder="Select a Gender" optionLabel="name" [showClear]="true"></p-dropdown>
+          <small class="p-invalid" *ngIf="submitted && person?.sex == ''">Gender is required.</small>
         </div>
       </div>
 
@@ -210,7 +212,7 @@
 
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="onAdd()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="onSavePerson()"></button>
   </ng-template>
 </p-dialog>
 

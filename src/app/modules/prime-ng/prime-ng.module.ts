@@ -11,6 +11,8 @@ import {GoogleMapsModule} from '@angular/google-maps';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputMaskModule} from 'primeng/inputmask';
 import {DropdownModule} from 'primeng/dropdown';
+import {CalendarModule} from 'primeng/calendar';
+
 
 
 
@@ -25,7 +27,8 @@ const PRIME_MODULE = [
   GoogleMapsModule,
   RadioButtonModule,
   InputMaskModule,
-  DropdownModule
+  DropdownModule,
+  CalendarModule
 ];
 
 @NgModule({
