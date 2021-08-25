@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {Observable} from 'rxjs';
 import {IPerson} from '../../../models/person-entity';
@@ -9,20 +9,35 @@ import {IPerson} from '../../../models/person-entity';
 export class PersonService {
   constructor(private http: HttpClient) {}
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: 'Bearer'
+    } ), responseType: 'text' as 'json'
+  };
+
+  addPerson(person: IPerson): Observable<any> {
+    person.datebirth.toDateString();
+    const url = `${environment.API_TRACK}/api/v1/person/add`;
+    return this.http.post<any>(url, person, this.httpOptions);
+    // return this.http.post<any>(ur, person
+  }
+
   getAllPerson(): any {
     return this.http.get<IPerson[]>(`${environment.API_TRACK}/api/v1/person/allPerson`).toPromise();
     }
 
-  updateBook(person) {
-    return this.http.put<IPerson>("http://localhost:8080/api/books" + "/"+ person.name,person);
+  updatePerson (person) {
+    return this.http.put<IPerson>(`${environment.API_TRACK}/api/v1/person/update`, person);
   }
 
-  deletePerson(id): any {
-    return this.http.delete<any>(`${environment.API_TRACK}/api/v1/person/delete/` + id).toPromise();
+  deletePerson(id): Observable<any> {
+    return this.http.delete<any>(`${environment.API_TRACK}/api/v1/person/delete/` + id,  this.httpOptions);
   }
 
-  findById(id){
-    return this.http.get(`${environment.API_TRACK}/api/v1/person/findById/` + id).toPromise();
+  findById(id): Observable<any>{
+    return this.http.get(`${environment.API_TRACK}/api/v1/person/findById/` + id, this.httpOptions);
   }
 
 
