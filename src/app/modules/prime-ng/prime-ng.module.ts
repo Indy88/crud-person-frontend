@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import {TableModule} from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
@@ -13,11 +12,8 @@ import {InputMaskModule} from 'primeng/inputmask';
 import {DropdownModule} from 'primeng/dropdown';
 import {CalendarModule} from 'primeng/calendar';
 import {ToastModule} from 'primeng/toast';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import {StyleClassModule} from 'primeng/styleclass';
 import {FormsModule} from '@angular/forms';
-import {RippleModule} from 'primeng/ripple';
+// import {RippleModule} from 'primeng/ripple';
 
 
 
@@ -35,9 +31,9 @@ const PRIME_MODULE = [
   DropdownModule,
   CalendarModule,
   ToastModule,
-  StyleClassModule,
+  // StyleClassModule,
   FormsModule,
-  RippleModule
+  // RippleModule
   //BrowserAnimationsModule,
   //BrowserModule
 ];

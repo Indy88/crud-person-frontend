@@ -3,7 +3,7 @@ import {PersonService} from '../../services/person.service';
 import {IPerson} from '../../../../models/person-entity';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MessageService} from 'primeng/api';
+import {MessageService} from 'primeng-lts/api';
 
 @Component({
   selector: 'app-person',
@@ -78,13 +78,10 @@ export class PersonComponent implements OnInit {
   }
 
   /*Fill Table*/
-  loadTable(): void{
-    this.personService.getAllPerson()
-      .then((data) => {
-        this.personList = data;
-        this.totalRecords = this.personList.length;
-      });
-
+  async loadTable(){
+    let data = await this.personService.getAllPerson();
+    this.personList = data;
+    this.totalRecords = this.personList.length;
   }
 
   onAdd(): void {
@@ -105,7 +102,7 @@ export class PersonComponent implements OnInit {
       if (!this.editing){
         this.personService.addPerson(this.person).toPromise().then((data) => {
           console.log(data);
-          // this.hideDialog()
+          this.hideDialog();
         });
       } else {
         this.personService.updatePerson(this.person)
@@ -113,7 +110,7 @@ export class PersonComponent implements OnInit {
             this.ngOnInit();
             alert('Person Updated successfully.');
           });
-        this.hideDialog()
+        this.hideDialog();
       }
     }
   }
@@ -143,7 +140,7 @@ export class PersonComponent implements OnInit {
   deletePerson(person: IPerson): void {
     this.personService.deletePerson(person.id).subscribe( (res: any) => {
       console.log(res);
-      this.ngOnInit();
+      this.loadTable();
     });
   }
 

@@ -8,10 +8,10 @@ import {PersonService} from './services/person.service';
 import { GoogleMapsModule} from '@angular/google-maps';
 import {LocateComponent} from './pages/locate/locate.component';
 import {PrimeNGModule} from '../prime-ng/prime-ng.module';
-import {StyleClassModule} from 'primeng/styleclass';
 import {TableModule} from 'primeng/table';
-
-
+import {CalendarModule} from 'primeng/calendar';
+import { CardModule, } from 'primeng/card';
+import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -24,8 +24,10 @@ import {TableModule} from 'primeng/table';
         FormsModule,
         ReactiveFormsModule,
         PrimeNGModule,
-        StyleClassModule,
-      TableModule
+        TableModule,
+        CalendarModule,
+        CardModule,
+        InputTextModule
         // AgmCoreModule
     ],
   providers: [

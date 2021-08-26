@@ -17,27 +17,25 @@ export class PersonService {
     } ), responseType: 'text' as 'json'
   };
 
-  addPerson(person: IPerson): Observable<any> {
+  addPerson(person: IPerson): Observable<IPerson> {
     person.datebirth.toDateString();
-    const url = `${environment.API_TRACK}/api/v1/person/add`;
-    return this.http.post<any>(url, person, this.httpOptions);
-    // return this.http.post<any>(ur, person
+    return this.http.post<IPerson>(`${environment.API_URL}/person`, person, this.httpOptions);
   }
 
-  getAllPerson(): any {
-    return this.http.get<IPerson[]>(`${environment.API_TRACK}/api/v1/person/allPerson`).toPromise();
+  getAllPerson(): Promise<IPerson[]> {
+    return this.http.get<IPerson[]>(`${environment.API_URL}/person`).toPromise();
     }
 
   updatePerson (person) {
-    return this.http.put<IPerson>(`${environment.API_TRACK}/api/v1/person/update`, person);
+    return this.http.put<IPerson>(`${environment.API_URL}/person`, person);
   }
 
   deletePerson(id): Observable<any> {
-    return this.http.delete<any>(`${environment.API_TRACK}/api/v1/person/delete/` + id,  this.httpOptions);
+    return this.http.delete(`${environment.API_URL}/person/${id}`,  this.httpOptions);
   }
 
   findById(id): Observable<any>{
-    return this.http.get(`${environment.API_TRACK}/api/v1/person/findById/` + id, this.httpOptions);
+    return this.http.get(`${environment.API_URL}/person/${id}`, this.httpOptions);
   }
 
 

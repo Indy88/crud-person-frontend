@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   currentThemeLife: 604800000,
-  API_TRACK: 'http://localhost:8080'
+  API_URL: 'http://localhost:8080/api/v1',
 
 };
 
