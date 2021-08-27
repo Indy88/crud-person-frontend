@@ -13,8 +13,9 @@ import {DropdownModule} from 'primeng/dropdown';
 import {CalendarModule} from 'primeng/calendar';
 import {ToastModule} from 'primeng/toast';
 import {FormsModule} from '@angular/forms';
-// import {RippleModule} from 'primeng/ripple';
-
+import {TableModule} from 'primeng/table';
+import {CardModule} from 'primeng/card';
+// import {ConfirmationService} from 'primeng/api';
 
 
 const PRIME_MODULE = [
@@ -22,8 +23,9 @@ const PRIME_MODULE = [
   InputNumberModule,
   ConfirmDialogModule,
   InputTextareaModule,
-  //TableModule,
+  TableModule,
   ButtonModule,
+  CardModule,
   DialogModule,
   GoogleMapsModule,
   RadioButtonModule,

@@ -8,8 +8,17 @@ export interface IPerson {
   sex: boolean;
   phone?: string;
   description?: string;
-/*  neighborhood: string;
+  neighborhood: string;
   codeNumber: string;
   city: string;
-  address: string;*/
+  address: string;
+  latitude: number;
+  longitude: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Gender {
+  name: string;
+  code: boolean;
 }
