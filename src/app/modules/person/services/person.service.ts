@@ -8,13 +8,23 @@ import {IPerson} from '../../../models/person-entity';
 @Injectable()
 export class PersonService {
   constructor(private http: HttpClient) {}
-
+/*
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
       'Access-Control-Allow-Origin': 'http://localhost:8080',
     })
+  };*/
+
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Access-Control-Allow-Origin': '*',
+      Authorization: 'Bearer'
+    } ), responseType: 'text' as 'json'
   };
+
 
   addPerson(person: IPerson): Observable<IPerson> {
     // person.datebirth.toDateString();
@@ -35,8 +45,7 @@ export class PersonService {
   }
 
   deletePerson(id): Observable<any> {
-    return this.http.delete<any>(`${environment.API_URL}/person/${id}`); //,  this.httpOptions
-    // return this.http.delete<any>(`${environment.API_URL}/person ${id}`, id); //,  this.httpOptions
+    return this.http.delete<any>(`${environment.API_URL}/person/${id}`, this.httpOptions);
   }
 
   findById(id): Observable<any>{
