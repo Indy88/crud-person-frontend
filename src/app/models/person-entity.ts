@@ -9,7 +9,7 @@ export interface IPerson {
   phone?: string;
   description?: string;
   neighborhood: string;
-  codeNumber: string;
+  codeNumber: number;
   city: string;
   address: string;
   latitude: number;

@@ -61,6 +61,7 @@ export class PersonComponent implements OnInit {
   autocomplete: any;
   located = true;
   showMap = false;
+
   @ViewChild('placesRef')placesRef: GooglePlaceDirective;
 
 
@@ -78,6 +79,13 @@ export class PersonComponent implements OnInit {
      this.maxDate = new Date();
   }
 
+  selectDate(event): void{
+    console.log(event);
+  }
+
+  onselect(event){
+
+  }
 
   /*Fill Table*/
   async loadTable() {
@@ -97,9 +105,9 @@ export class PersonComponent implements OnInit {
       latitude: null, longitude: null,
       address: '',
       city: '',
-      codeNumber: '',
+      codeNumber: undefined,
       neighborhood: '',
-      cpf: undefined , datebirth: undefined, email: '', fullname: '', sex: undefined};
+      cpf: undefined , datebirth: new Date() , email: '', fullname: '', sex: undefined};
 
     this.submitted = false;
     this.personDialog = true;
@@ -113,12 +121,11 @@ export class PersonComponent implements OnInit {
     this.submitted = true;
     if (this.validPerson()) {
       if (!this.editing){
-        this.convertDate(this.person.datebirth);
         this.person.latitude = this.position.lat;
         this.person.longitude = this.position.lng;
         this.personService.addPerson(this.person).toPromise().then((data) => {
           this.hideDialog();
-          this.messageService.add({severity:'success', summary:'Sucess', detail:'Person Added Sucessfully'});
+          this.messageService.add({severity: 'success', summary: 'Sucess', detail: 'Person Added Sucessfully'});
           // this.loadTable();
         });
       } else {
@@ -126,7 +133,7 @@ export class PersonComponent implements OnInit {
         this.personService.updatePerson(this.person)
           .subscribe( data => {
             this.loadTable();
-            this.messageService.add({severity:'success', summary:'Sucess', detail:'Person Updated Sucessfully'});
+            this.messageService.add({severity: 'success', summary: 'Sucess', detail: 'Person Updated Sucessfully'});
           });
         this.hideDialog();
       }
@@ -142,19 +149,18 @@ export class PersonComponent implements OnInit {
     }
   }
 
-  convertDate(date){
 
-
-  }
 
   onSelectGender(event): void{
     this.person.sex = event.value.code;
   }
 
 
-  onEditRow(person: IPerson): void  {
+  onEditRow(person): void  {
     this.person = { ...person };
+    this.person.datebirth = new Date(person.datebirth) ;
     this.personDialog = true;
+    this.person.sex ? this.selectedGender = this.genders[0] : this.selectedGender = this.genders[1];
     this.editing = true;
     // this.selectedGender.code = this.person.sex;
     this.setPosition(this.person.latitude, this.person.longitude);
@@ -191,6 +197,7 @@ export class PersonComponent implements OnInit {
     this.personDialog = false;
     this.editing = false;
     this.loadTable();
+    this.selectedGender = null;
     this.showMap = false;
   }
 
@@ -199,9 +206,5 @@ export class PersonComponent implements OnInit {
     this.position.lng = lng;
   }
 
-  selectDate(event): void{
-    //const test = new Date(event).getDate();
-    //console.log(test);
-  }
 
 }

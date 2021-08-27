@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {InputTextModule} from 'primeng/inputtext';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
@@ -10,7 +10,7 @@ import {GoogleMapsModule} from '@angular/google-maps';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputMaskModule} from 'primeng/inputmask';
 import {DropdownModule} from 'primeng/dropdown';
-import {CalendarModule} from 'primeng/calendar';
+import {CalendarModule} from 'primeng-lts/calendar';
 import {ToastModule} from 'primeng/toast';
 import {FormsModule} from '@angular/forms';
 import {TableModule} from 'primeng/table';
@@ -42,6 +42,7 @@ const PRIME_MODULE = [
     CommonModule,
     ...PRIME_MODULE,
   ],
+  providers: [DatePipe],
   exports: [...PRIME_MODULE]
 })
 export class PrimeNGModule { }
