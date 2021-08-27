@@ -118,13 +118,15 @@ export class PersonComponent implements OnInit {
         this.person.longitude = this.position.lng;
         this.personService.addPerson(this.person).toPromise().then((data) => {
           this.hideDialog();
+          this.messageService.add({severity:'success', summary:'Sucess', detail:'Person Added Sucessfully'});
           // this.loadTable();
         });
       } else {
+        this.person.updated_at = new Date();
         this.personService.updatePerson(this.person)
           .subscribe( data => {
-            this.ngOnInit();
-            alert('Person Updated successfully.');
+            this.loadTable();
+            this.messageService.add({severity:'success', summary:'Sucess', detail:'Person Updated Sucessfully'});
           });
         this.hideDialog();
       }
@@ -138,7 +140,6 @@ export class PersonComponent implements OnInit {
     } else {
       return  false;
     }
-
   }
 
   convertDate(date){
@@ -199,8 +200,8 @@ export class PersonComponent implements OnInit {
   }
 
   selectDate(event): void{
-    const test = new Date(event).getDate();
-    console.log(test);
+    //const test = new Date(event).getDate();
+    //console.log(test);
   }
 
 }

@@ -120,7 +120,7 @@
       <div class="p-row p-col-12 p-md-4" >
         <div class="p-field p-col-6">
           <label >Date Birth</label>
-          <p-calendar [(ngModel)]="person.datebirth"  [maxDate]="maxDate" [readonlyInput]="true" [showIcon]="true" inputId="min-max" required
+          <p-calendar [(ngModel)]="person.datebirth"  [maxDate]="maxDate" [readonlyInput]="true" inputId="min-max" required
                       dateFormat="dd/mm/yy" (onSelect)="selectDate($event)" [ngClass]="(submitted && person.datebirth == undefined)?'ng-invalid ng-dirty': 'empty'">
 
           </p-calendar>
@@ -129,10 +129,10 @@
         <div class="p-field p-col-6" style="margin-top: 20px">
           <p-dropdown [options]="genders"
                       optionLabel="name"
-                      [(ngModel)]="person.sex"
+                      [(ngModel)]="selectedGender"
                       [ngClass]="(submitted && person.sex == undefined)?'ng-invalid ng-dirty': 'empty'"
                       (onChange)="onSelectGender($event)"
-                      placeholder="Select a Gender" optionLabel="name" [showClear]="true"></p-dropdown>
+                      placeholder="Select a Gender"></p-dropdown>
         </div>
 
         <div class="p-field p-col-6">
@@ -146,17 +146,12 @@
        <div class="p-row" style="margin-top: 20px">
          <div class="p-field">
              <label>Address</label>
-           <!--  <textarea id="address" rows="3" cols="30"  [(ngModel)]="person.address" pInputTextarea
-                       (change)="onChangedAddress($event)"
-                       [ngClass]="(submitted && person.address == '')?'ng-invalid ng-dirty': 'empty'"></textarea>-->
-
            <!--Google Maps Components need APiKey-->
            <input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places"
                   pInputText id="address" required
                   [ngClass]="(submitted && person.address == '')?'ng-invalid ng-dirty': 'empty'"
                   [(ngModel)]="person.address"
                   (onAddressChange)="handleAddressChange($event)"/>
-
          </div>
        </div>
 
@@ -192,3 +187,5 @@
   </agm-map>
 
 </div>
+
+<p-toast position="top-right"></p-toast>

@@ -33,12 +33,8 @@ const PRIME_MODULE = [
   DropdownModule,
   CalendarModule,
   ToastModule,
-  // StyleClassModule,
   FormsModule,
-  // RippleModule
-  //BrowserAnimationsModule,
-  //BrowserModule
-];
+  ];
 
 @NgModule({
   declarations: [],
