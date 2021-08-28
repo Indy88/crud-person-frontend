@@ -21,7 +21,7 @@
       People listing
         <span class="p-input-icon-left p-ml-auto">
             <i class="pi pi-search"></i>
-            <input pInputText type="text" (input)="search($event.target.value)" placeholder="Search" />
+            <input pInputText type="text" (input)="search($event.target.value)" placeholder="Search by Name" />
         </span>
     </div>
 </ng-template>
@@ -55,7 +55,7 @@
     <tr>
       <td *ngFor="let col of columns">
         <span *ngIf="col.field !== 'sex'">{{rowData[col.field]}}</span>
-        <span *ngIf="col.field === 'sex'">{{rowData[col.field] ? 'Femenine' : 'Masculine'}}</span>
+        <span *ngIf="col.field === 'sex'">{{rowData[col.field] ? 'Female' : 'Male'}}</span>
       </td>
       <td style="text-align:center">
 

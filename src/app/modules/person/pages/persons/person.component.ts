@@ -47,8 +47,8 @@ export class PersonComponent implements OnInit {
   ];
 
   genderOptions = [
-    {label: 'Femenine', value: true},
-    {label: 'Masculine', value: false}];
+    {label: 'Female', value: true},
+    {label: 'Male', value: false}];
 
   maxDate: Date;
   totalRecords: number;
