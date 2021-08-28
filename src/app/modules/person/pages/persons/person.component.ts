@@ -230,6 +230,20 @@ export class PersonComponent implements OnInit {
     }
   }
 
+
+  async search(value){
+    if (value !==''){
+      await this.personService.findByName(value, this.page, this.size).then((data: any) => {
+        this.personList = data.content;
+        this.isFirst = data.first;
+        this.isLast = data.last;
+      });
+    }else  {
+      this.loadTable();
+    }
+
+  }
+
   clearFilterDate($event){
     this.loadTable();
   }

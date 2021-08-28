@@ -21,7 +21,7 @@
       People listing
         <span class="p-input-icon-left p-ml-auto">
             <i class="pi pi-search"></i>
-            <input pInputText type="text" (input)="dt.filter($event.target.value, 'fullname','contains')" placeholder="Search" />
+            <input pInputText type="text" (input)="search($event.target.value)" placeholder="Search" />
         </span>
     </div>
 </ng-template>

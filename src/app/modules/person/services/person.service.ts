@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {Observable} from 'rxjs';
 import {IPerson} from '../../../models/person-entity';
 
 
@@ -43,6 +42,9 @@ export class PersonService {
     return this.http.get<any>(`${environment.API_URL}/person/filterDate/${date}?+page=${page}&size=${size}`).toPromise();
   }
 
+  findByName(name, page: number, size: number): Promise<IPerson[]>{
+    return this.http.get<any>(`${environment.API_URL}/person/search/${name}?+page=${page}&size=${size}`).toPromise();
+  }
 
 
 }
