@@ -35,9 +35,11 @@ export class PersonService {
     return this.http.delete<any>(`${environment.API_URL}/person/${id}`, this.httpOptions);
   }
 
-  findById(id): Observable<any>{
-    return this.http.get(`${environment.API_URL}/person/${id}`, this.httpOptions);
+  findByIdSex(gender, page: number, size: number): Promise<IPerson[]>{
+    return this.http.get<any>(`${environment.API_URL}/person/filterSex/${gender}?++page=${page}&size=${size}`).toPromise();
   }
+
+
 
 
 }

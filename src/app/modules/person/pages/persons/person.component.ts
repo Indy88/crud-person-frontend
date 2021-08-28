@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PersonService} from '../../services/person.service';
 import {Gender, IPerson} from '../../../../models/person-entity';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -7,7 +7,9 @@ import {MessageService, ConfirmationService} from 'primeng-lts/api';
 import {GooglePlaceDirective} from 'ngx-google-places-autocomplete';
 import {Address} from 'ngx-google-places-autocomplete/objects/address';
 import {DatePipe} from '@angular/common';
-import {Calendar} from 'primeng/calendar';
+import {Table} from 'primeng/table';
+import {Dropdown} from 'primeng/dropdown';
+
 
 
 @Component({
@@ -46,6 +48,11 @@ export class PersonComponent implements OnInit {
     {name: 'Male', code: false},
   ];
 
+  genderOptions = [
+    {label: 'Femenino', value: true},
+    {label: 'Masculino', value: false}]
+
+
   maxDate: Date;
   totalRecords: number;
   // clonedPerson: { [personData: string]: IPerson; } = {};
@@ -63,7 +70,8 @@ export class PersonComponent implements OnInit {
   showMap = false;
 
   @ViewChild('placesRef')placesRef: GooglePlaceDirective;
-
+  @ViewChild('dt') table: Table;
+  @ViewChild('filterSex') dropGender: Dropdown;
 
   constructor(private personService: PersonService,
               private router: Router,
@@ -81,10 +89,6 @@ export class PersonComponent implements OnInit {
 
   selectDate(event): void{
     console.log(event);
-  }
-
-  onselect(event){
-
   }
 
   /*Fill Table*/
@@ -206,5 +210,38 @@ export class PersonComponent implements OnInit {
     this.position.lng = lng;
   }
 
+  formatDate(date) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    if (month < 10) {
+      month = '0' + month;
+    }
+
+    if (day < 10) {
+      day = '0' + day;
+    }
+
+    return date.getFullYear() + '-' + month + '-' + day;
+  }
+
+  onDateSelect(value): void {
+    this.table.filter(this.formatDate(value), 'date', 'equals');
+  }
+
+  filterbySex(value): void{
+    if (this.dropGender.selectedOption.value !== undefined){
+      let gender =  this.dropGender.selectedOption.value;
+      this.personService.findByIdSex(gender, this.page, this.size).then((data: any) => {
+        this.personList = data.content;
+        this.isFirst = data.first;
+        this.isLast = data.last;
+      });
+    }
+  }
+
+  close($event){
+
+  }
 
 }

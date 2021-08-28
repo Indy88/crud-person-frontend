@@ -13,7 +13,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {CalendarModule} from 'primeng-lts/calendar';
 import {ToastModule} from 'primeng/toast';
 import {FormsModule} from '@angular/forms';
-import {TableModule} from 'primeng/table';
+import {TableModule} from 'primeng-lts/table';
 import {CardModule} from 'primeng/card';
 // import {ConfirmationService} from 'primeng/api';
 
