@@ -47,8 +47,8 @@ export class PersonComponent implements OnInit {
   ];
 
   genderOptions = [
-    {label: 'Femenino', value: true},
-    {label: 'Masculino', value: false}];
+    {label: 'Femenine', value: true},
+    {label: 'Masculine', value: false}];
 
   maxDate: Date;
   totalRecords: number;
@@ -232,7 +232,7 @@ export class PersonComponent implements OnInit {
 
 
   async search(value){
-    if (value !==''){
+    if (value !== ''){
       await this.personService.findByName(value, this.page, this.size).then((data: any) => {
         this.personList = data.content;
         this.isFirst = data.first;
