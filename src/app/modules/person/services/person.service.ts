@@ -36,9 +36,12 @@ export class PersonService {
   }
 
   findByIdSex(gender, page: number, size: number): Promise<IPerson[]>{
-    return this.http.get<any>(`${environment.API_URL}/person/filterSex/${gender}?++page=${page}&size=${size}`).toPromise();
+    return this.http.get<any>(`${environment.API_URL}/person/filterSex/${gender}?+page=${page}&size=${size}`).toPromise();
   }
 
+  findByIdDateBirth(date, page: number, size: number): Promise<IPerson[]>{
+    return this.http.get<any>(`${environment.API_URL}/person/filterDate/${date}?+page=${page}&size=${size}`).toPromise();
+  }
 
 
 

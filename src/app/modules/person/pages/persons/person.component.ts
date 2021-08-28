@@ -213,35 +213,40 @@ export class PersonComponent implements OnInit {
   formatDate(date) {
     let month = date.getMonth() + 1;
     let day = date.getDate();
-
     if (month < 10) {
       month = '0' + month;
     }
-
     if (day < 10) {
       day = '0' + day;
     }
-
     return date.getFullYear() + '-' + month + '-' + day;
   }
 
   onDateSelect(value): void {
-    this.table.filter(this.formatDate(value), 'date', 'equals');
+    let birthDate = this.formatDate(value);
+    // this.table.filter(this.formatDate(value), 'date', 'equals');
+    this.personService.findByIdDateBirth(new Date(birthDate), this.page, this.size).then((data: any) => {
+      this.personList = data.content;
+      this.isFirst = data.first;
+      this.isLast = data.last;
+    });
   }
 
-  filterbySex(value): void{
-    if (this.dropGender.selectedOption.value !== undefined){
-      let gender =  this.dropGender.selectedOption.value;
-      this.personService.findByIdSex(gender, this.page, this.size).then((data: any) => {
-        this.personList = data.content;
-        this.isFirst = data.first;
-        this.isLast = data.last;
-      });
+  filterbySex(event): void{
+    if (event.value == null){
+      this.loadTable();
+    } else {
+       this.personService.findByIdSex(event.value, this.page, this.size).then((data: any) => {
+       this.personList = data.content;
+       this.isFirst = data.first;
+       this.isLast = data.last;
+     });
     }
   }
 
-  close($event){
-
+  clearFilterDate($event){
+    this.loadTable();
   }
+
 
 }

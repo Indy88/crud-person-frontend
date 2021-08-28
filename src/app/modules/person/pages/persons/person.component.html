@@ -35,16 +35,12 @@
           <p-dropdown #filterSex *ngIf="col.type == 'text'"
                       [options]="genderOptions"
                       (onChange)="filterbySex($event)"
-                      (onClick)="close($event)"
-                      styleClass="p-dropdown p-column-filter" placeholder="Select Gender" showClear="true">
+                      styleClass="p-dropdown p-column-filter" placeholder="Select" showClear="true">
 
-     <!--       <ng-template let-option pTemplate="item">
-              <span [class]="'customer-badge status-' + option.code" (select)="option">{{option.name}}</span>
-            </ng-template>
-            -->
-          </p-dropdown>
+             </p-dropdown>
 
-          <p-calendar *ngIf="col.type == 'date'"(onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'date', 'equals')"
+          <p-calendar *ngIf="col.type == 'date'"(onSelect)="onDateSelect($event)"
+                      (onClearClick)="clearFilterDate($event)"
                       [showButtonBar]="true" styleClass="p-column-filter" placeholder="Birthdate Date"
                       [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
 
