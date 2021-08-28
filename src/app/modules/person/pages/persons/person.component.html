@@ -54,7 +54,8 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex">
     <tr>
       <td *ngFor="let col of columns">
-        {{rowData[col.field]}}
+        <span *ngIf="col.field !== 'sex'">{{rowData[col.field]}}</span>
+        <span *ngIf="col.field === 'sex'">{{rowData[col.field] ? 'Femenine' : 'Masculine'}}</span>
       </td>
       <td style="text-align:center">
 
@@ -78,8 +79,8 @@
           header="Add Person" [modal]="true" styleClass="p-fluid">
   <ng-template pTemplate="content">
     <div class="grid">
-      <div class="p-row p-d-flex">
-           <div class="p-field p-md-6">
+      <div class="p-d-flex">
+           <div class="p-field p-col-6">
              <label for="fullname">FullName</label>
              <input type="text" [(ngModel)]="person.fullname" pInputText id="fullname" [ngClass]="(submitted && person.fullname == '')?'ng-invalid ng-dirty': 'empty'"
                     [maxLength]="60" required autofocus/>
@@ -90,17 +91,30 @@
              <p-inputNumber [(ngModel)]="person.cpf" mode="decimal" inputId="cpf" [useGrouping]="false" [ngClass]="(submitted && person.cpf == undefined)?'ng-invalid ng-dirty': 'empty'"
                             [maxlength]="11" [minlength]="11">
              </p-inputNumber>
-
            </div>
-
-           <div class="p-field p-col-6">
-          <label for="neighborhood">Neighborhood</label>
-          <input type="text" [(ngModel)]="person.neighborhood" pInputText id="neighborhood" [ngClass]="(submitted && person.neighborhood == '')?'ng-invalid ng-dirty': 'empty'">
-
-        </div>
       </div>
 
-      <div class="p-row" style="padding-right: 11px; padding-left: 11px">
+      <div class="p-d-flex" >
+        <div class="p-field p-col-6">
+          <label>Date Birth</label>
+          <p-calendar [(ngModel)]="person.datebirth"  [maxDate]="maxDate" [readonlyInput]="true" inputId="min-max" required
+                      dateFormat="dd/mm/yy" (onSelect)="selectDate($event)" [ngClass]="(submitted && person.datebirth == undefined)?'ng-invalid ng-dirty': 'empty'">
+
+          </p-calendar>
+        </div>
+        <!--Genders-->
+    <div class="p-field p-col-6">
+      <label>Gender</label>
+      <p-dropdown [options]="genders"
+                  optionLabel="name"
+                  [(ngModel)]="selectedGender"
+                  [ngClass]="(submitted && person.sex == undefined)?'ng-invalid ng-dirty': 'empty'"
+                  (onChange)="onSelectGender($event)"
+                  placeholder="Select..."></p-dropdown>
+    </div>
+  </div>
+
+      <div class="p-d-flex">
         <div class="p-field p-col-6">
           <label for="email">Email</label>
           <input type="text" pInputText id="email" [(ngModel)]="person.email" required  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
@@ -113,45 +127,29 @@
                         [ngClass]="(submitted && person.phone == '')?'ng-invalid ng-dirty': 'empty'"
           ></p-inputMask>
         </div>
+      </div>
 
-        <div class="p-field p-col-6">
+      <div class="p-d-flex">
+        <div class="p-field p-col-4">
           <label>CodeNumber</label>
           <p-inputNumber [(ngModel)]="person.codeNumber" mode="decimal" inputId="codenumber" [useGrouping]="false"
                          [ngClass]="(submitted && person.codeNumber == '')?'ng-invalid ng-dirty': 'empty'"
                          [maxlength]="11" [minlength]="11" required>
           </p-inputNumber>
         </div>
-      </div>
-
-      <div class="p-row p-col-12 p-md-4" >
-        <div class="p-field p-col-6">
-          <label >Date Birth</label>
-          <p-calendar [(ngModel)]="person.datebirth"  [maxDate]="maxDate" [readonlyInput]="true" inputId="min-max" required
-                      dateFormat="dd/mm/yy" (onSelect)="selectDate($event)" [ngClass]="(submitted && person.datebirth == undefined)?'ng-invalid ng-dirty': 'empty'">
-
-          </p-calendar>
+        <div class="p-field p-col-4">
+          <label for="neighborhood">Neighborhood</label>
+          <input type="text" [(ngModel)]="person.neighborhood" pInputText id="neighborhood" [ngClass]="(submitted && person.neighborhood == '')?'ng-invalid ng-dirty': 'empty'">
         </div>
-
-        <!--Genders-->
-        <div class="p-field p-col-6" style="margin-top: 20px">
-          <p-dropdown [options]="genders"
-                      optionLabel="name"
-                      [(ngModel)]="selectedGender"
-                      [ngClass]="(submitted && person.sex == undefined)?'ng-invalid ng-dirty': 'empty'"
-                      (onChange)="onSelectGender($event)"
-                      placeholder="Select a Gender"></p-dropdown>
-        </div>
-
-        <div class="p-field p-col-6">
+        <div class="p-field p-col-4">
           <label for="city">City</label>
           <input type="text" [(ngModel)]="person.city" pInputText id="city" required
                  [ngClass]="(submitted && person.city == '')?'ng-invalid ng-dirty': 'empty'">
         </div>
-
       </div>
 
-       <div class="p-row" style="margin-top: 20px">
-         <div class="p-field">
+       <div class="p-d-flex">
+         <div class="p-field p-col-6">
              <label>Address</label>
            <!--Google Maps Components need APiKey-->
            <input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places"
@@ -160,16 +158,21 @@
                   [(ngModel)]="person.address"
                   (onAddressChange)="handleAddressChange($event)"/>
          </div>
-       </div>
-
-      <div class="p-row" style="margin-top: 20px; margin-left: 10px">
-        <div class="p-field p-col-6">
+         <div class="p-field p-col-6">
           <label>Description</label>
           <textarea id="float-input" rows="3" cols="30"  [(ngModel)]="person.description" pInputTextarea></textarea>
         </div>
 
-      </div>
+       </div>
 
+      <div class="p-d-flex">
+        <div class="p-col-6">
+          <agm-map [latitude]="position.lat" [longitude]="position.lng" *ngIf="showMap">
+            <agm-marker [latitude]="position.lat" [longitude]="position.lng">
+            </agm-marker>
+          </agm-map>
+        </div>
+      </div>
     </div>
 
 
@@ -182,17 +185,5 @@
 </p-dialog>
 
 <p-confirmDialog header="Delete Information" icon="pi pi-info-circle p-confirm-dialog-icon"></p-confirmDialog>
-
-<div style="margin-top: 3%">
-  <agm-map [latitude]="position.lat" [longitude]="position.lng" *ngIf="showMap">
-    <agm-marker [latitude]="position.lat" [longitude]="position.lng">
-      <agm-info-window>
-
-      </agm-info-window>
-
-    </agm-marker>
-  </agm-map>
-
-</div>
 
 <p-toast position="top-right"></p-toast>

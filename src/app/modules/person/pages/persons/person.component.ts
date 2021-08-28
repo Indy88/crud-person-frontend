@@ -7,8 +7,6 @@ import {MessageService, ConfirmationService} from 'primeng-lts/api';
 import {GooglePlaceDirective} from 'ngx-google-places-autocomplete';
 import {Address} from 'ngx-google-places-autocomplete/objects/address';
 import {DatePipe} from '@angular/common';
-import {Table} from 'primeng/table';
-import {Dropdown} from 'primeng/dropdown';
 
 
 
@@ -50,12 +48,10 @@ export class PersonComponent implements OnInit {
 
   genderOptions = [
     {label: 'Femenino', value: true},
-    {label: 'Masculino', value: false}]
-
+    {label: 'Masculino', value: false}];
 
   maxDate: Date;
   totalRecords: number;
-  // clonedPerson: { [personData: string]: IPerson; } = {};
   editing = false;
 
   label = {color: 'yellow', text: 'Is Here'};
@@ -70,16 +66,11 @@ export class PersonComponent implements OnInit {
   showMap = false;
 
   @ViewChild('placesRef')placesRef: GooglePlaceDirective;
-  @ViewChild('dt') table: Table;
-  @ViewChild('filterSex') dropGender: Dropdown;
-
   constructor(private personService: PersonService,
               private router: Router,
               private formBuilder: FormBuilder,
               private messageService: MessageService,
-              private confirmationService: ConfirmationService,
-              private datePipe: DatePipe,
-              private activeRoute: ActivatedRoute ) { }
+              private confirmationService: ConfirmationService) { }
 
 
   ngOnInit(): void {
@@ -121,24 +112,21 @@ export class PersonComponent implements OnInit {
 
 
   /***Save Person*/
-  onSavePerson(): void {
+  async onSavePerson() {
     this.submitted = true;
     if (this.validPerson()) {
-      if (!this.editing){
+      if (!this.editing) {
         this.person.latitude = this.position.lat;
         this.person.longitude = this.position.lng;
-        this.personService.addPerson(this.person).toPromise().then((data) => {
-          this.hideDialog();
-          this.messageService.add({severity: 'success', summary: 'Sucess', detail: 'Person Added Sucessfully'});
-          // this.loadTable();
-        });
+        await this.personService.addPerson(this.person);
+        this.hideDialog();
+        this.messageService.add({severity: 'success', summary: 'Sucess', detail: 'Person Added Sucessfully'});
+
       } else {
         this.person.updated_at = new Date();
-        this.personService.updatePerson(this.person)
-          .subscribe( data => {
-            this.loadTable();
-            this.messageService.add({severity: 'success', summary: 'Sucess', detail: 'Person Updated Sucessfully'});
-          });
+        await this.personService.updatePerson(this.person);
+        this.loadTable();
+        this.messageService.add({severity: 'success', summary: 'Sucess', detail: 'Person Updated Sucessfully'});
         this.hideDialog();
       }
     }
@@ -146,7 +134,8 @@ export class PersonComponent implements OnInit {
 
   validPerson(): boolean {
     if (this.person.fullname !== '' &&  String(this.person.cpf).length === 11
-      && this.person.datebirth !== null ){
+      && this.person.datebirth !== null && this.person.address !== '' && this.person.sex !== undefined
+      && this.person.city !== '' && this.person.neighborhood !== ''){
       return  true;
     } else {
       return  false;
@@ -166,7 +155,6 @@ export class PersonComponent implements OnInit {
     this.personDialog = true;
     this.person.sex ? this.selectedGender = this.genders[0] : this.selectedGender = this.genders[1];
     this.editing = true;
-    // this.selectedGender.code = this.person.sex;
     this.setPosition(this.person.latitude, this.person.longitude);
     this.showMap = true;
   }
@@ -175,17 +163,16 @@ export class PersonComponent implements OnInit {
   deletePerson(person: IPerson): void {
       this.confirmationService.confirm({
         message: 'Do you want delete this record?',
-        accept: () => {
-          this.personService.deletePerson(person.id).subscribe( (res: any) => {
-            this.loadTable();
-          });
-        }
+        accept: async () => {
+          await this.personService.deletePerson(person.id);
+          this.loadTable();
+          }
       });
   }
 
    handleAddressChange(address: Address): void {
-    this.setPosition( address.geometry.location.lat(),  address.geometry.location.lng() );
-    // this.setCurrentLocation();
+   this.setPosition( address.geometry.location.lat(),  address.geometry.location.lng());
+   address.formatted_address !== null ? this.person.address =  address.formatted_address : this.person.address =  address.name;
   }
 
 
@@ -222,10 +209,9 @@ export class PersonComponent implements OnInit {
     return date.getFullYear() + '-' + month + '-' + day;
   }
 
-  onDateSelect(value): void {
-    let birthDate = this.formatDate(value);
-    // this.table.filter(this.formatDate(value), 'date', 'equals');
-    this.personService.findByIdDateBirth(new Date(birthDate), this.page, this.size).then((data: any) => {
+  async onDateSelect(value) {
+    const birthDate = this.formatDate(value);
+    await this.personService.findByIdDateBirth(new Date(birthDate), this.page, this.size).then((data: any) => {
       this.personList = data.content;
       this.isFirst = data.first;
       this.isLast = data.last;

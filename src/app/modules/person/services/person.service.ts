@@ -18,12 +18,12 @@ export class PersonService {
   };
 
 
-  addPerson(person: IPerson): Observable<IPerson> {
-    return this.http.post<IPerson>(`${environment.API_URL}/person`, person);
+  addPerson(person: IPerson): Promise<IPerson> {
+    return this.http.post<IPerson>(`${environment.API_URL}/person`, person).toPromise();
   }
 
-  updatePerson(person: IPerson): Observable<IPerson>  {
-    return this.http.put<IPerson>(`${environment.API_URL}/person`, person);
+  updatePerson(person: IPerson): Promise<IPerson>  {
+    return this.http.put<IPerson>(`${environment.API_URL}/person`, person).toPromise();
   }
 
   getAllPerson(page: number, size: number, order: string, asc: boolean ): Promise<IPerson[]> {
@@ -31,8 +31,8 @@ export class PersonService {
   }
 
 
-  deletePerson(id): Observable<any> {
-    return this.http.delete<any>(`${environment.API_URL}/person/${id}`, this.httpOptions);
+  deletePerson(id): Promise<IPerson>{
+    return this.http.delete<any>(`${environment.API_URL}/person/${id}`, this.httpOptions).toPromise();
   }
 
   findByIdSex(gender, page: number, size: number): Promise<IPerson[]>{

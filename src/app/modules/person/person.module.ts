@@ -5,7 +5,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PersonRoutingModule} from './person-routing.module';
 import {PersonService} from './services/person.service';
 import { AgmCoreModule } from '@agm/core';
-// import { GoogleMapsModule} from '@angular/google-maps';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import {LocateComponent} from './pages/locate/locate.component';
 import {PrimeNGModule} from '../prime-ng/prime-ng.module';
