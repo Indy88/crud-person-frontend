@@ -1,6 +1,8 @@
 # crud-person-frontend
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.12.
+To start the project it is necessary to insert  **API_KEY** in the person.module.ts
+
 
 ## Development server
 
